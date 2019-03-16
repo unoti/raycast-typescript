@@ -16,18 +16,25 @@ export class Controls {
     }
 
     keyEvent = (isDown: boolean, event: KeyboardEvent) => {
-        console.log(`key event down=${isDown}`);
-        console.log(event);
+        //console.log(`key event down=${isDown}`);
+        //console.log(event);
         switch (event.key) {
-            case 'ArrowLeft':   
+            case 'a':
+            case 'ArrowLeft':
                 this.left = isDown;
                 break;
+
+            case 'd':
             case 'ArrowRight':
                 this.right = isDown;
                 break;
+            
+            case 's':
             case 'ArrowDown':
                 this.back = isDown;
                 break;
+            
+            case 'w':
             case 'ArrowUp':
                 this.forward = isDown;
                 break;

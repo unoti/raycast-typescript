@@ -38,7 +38,7 @@ export class Viewer extends Component<Props, State> {
                     <button onClick={this.startClicked}>Start</button>
                     <button onClick={this.stopClicked}>Stop</button>
                 </div>
-                <canvas id="viewport" ref={this.canvasRef} width="500" height="500"/>
+                <canvas id="viewport" ref={this.canvasRef} width="1000" height="500"/>
             </div>
         );
     }

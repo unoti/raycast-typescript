@@ -1,16 +1,20 @@
-import { Controls } from "./Controls";
+import { Controls } from './Controls';
+import { Skybox } from './Skybox';
+import { Player } from './Player';
+import { Bitmap } from './Bitmap';
 
 const MOVE_SPEED = 80;
+const TURN_SPEED = Math.PI;   // Turn speed in radians per second.
 
 export class Raycast {
     private ctx: CanvasRenderingContext2D | null;
     private frameCount: number;
     private animationCallback: any;
     private running: boolean;
-    private controls: Controls;
-    private blipX: number;
-    private blipY: number;
     private lastFrameTime: number;
+    private controls: Controls;
+    private skybox: Skybox;
+    private player: Player;
 
     constructor(private canvas: HTMLCanvasElement) {
         this.ctx = this.canvas.getContext('2d');
@@ -18,10 +22,12 @@ export class Raycast {
         this.frameCount = 0;
         this.animationCallback = this.frameCallback.bind(this);
         this.running = false;
-        this.controls = new Controls();
-        this.blipX = 0;
-        this.blipY = 0;
         this.lastFrameTime = 0;
+
+        this.controls = new Controls();
+        var weapon = new Bitmap('assets/knife.png', 319, 320);
+        this.player = new Player(this.controls, TURN_SPEED, 10, 10, weapon, canvas.width, canvas.height);
+        this.skybox = new Skybox('assets/skybox.jpg', 2000, 750, canvas.width, canvas.height);
         this.start();
     }
 
@@ -36,22 +42,23 @@ export class Raycast {
     }
 
     public update(elapsed: number) {
-        if (this.controls.forward)  this.blipY -= MOVE_SPEED * elapsed;
-        if (this.controls.back)  this.blipY += MOVE_SPEED * elapsed;
-        if (this.controls.left)  this.blipX -= MOVE_SPEED * elapsed;
-        if (this.controls.right)  this.blipX += MOVE_SPEED * elapsed;
-        console.log(`pos=(${this.blipX}, ${this.blipY}) elapsed=${elapsed}`);
+        this.player.update(elapsed);
+
+        var fps = elapsed ? 1 / elapsed : 0;
+        console.log(`pos=(${this.player.x}, ${this.player.y}) angle=${this.player.angle} fps=${fps.toPrecision(5)}`);
     }
 
     public renderFrame() {
         if (this.ctx == null)   // because my context type is | null, because it has delayed loading because React.
             return;
-    
-        this.ctx.fillStyle = 'black';
-        this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
+        this.skybox.draw(this.ctx, this.player.angle);
+        this.player.draw(this.ctx);
+
+        //this.ctx.fillStyle = 'black';
+        //this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
         
-        this.ctx.fillStyle = 'green';
-        this.ctx.fillRect(this.blipX, this.blipY, 150, 100);
+        //this.ctx.fillStyle = 'green';
+        //this.ctx.fillRect(this.blipX, this.blipY, 150, 100);
     }
 
     public frameCallback(time: number) {
