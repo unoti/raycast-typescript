@@ -69,6 +69,7 @@
         if (controls.forward) this.walk(3 * seconds, map);
         if (controls.backward) this.walk(-3 * seconds, map);
       };
+      
       function Map(size) {
         this.size = size;
         this.wallGrid = new Uint8Array(size * size);

@@ -2,9 +2,11 @@ import { Controls } from './Controls';
 import { Skybox } from './Skybox';
 import { Player } from './Player';
 import { Bitmap } from './Bitmap';
+import { Map } from './Map';
 
 const MOVE_SPEED = 80;
 const TURN_SPEED = Math.PI;   // Turn speed in radians per second.
+const MAP_SIZE = 64;        // Size of one side of the map square in cells.
 
 export class Raycast {
     private ctx: CanvasRenderingContext2D | null;
@@ -15,6 +17,7 @@ export class Raycast {
     private controls: Controls;
     private skybox: Skybox;
     private player: Player;
+    private map: Map;
 
     constructor(private canvas: HTMLCanvasElement) {
         this.ctx = this.canvas.getContext('2d');
@@ -28,6 +31,8 @@ export class Raycast {
         var weapon = new Bitmap('assets/knife.png', 319, 320);
         this.player = new Player(this.controls, TURN_SPEED, 10, 10, weapon, canvas.width, canvas.height);
         this.skybox = new Skybox('assets/skybox.jpg', 2000, 750, canvas.width, canvas.height);
+        this.map = new Map(MAP_SIZE);
+        this.map.makeRandomWalls();
         this.start();
     }
 
