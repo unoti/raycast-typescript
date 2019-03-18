@@ -9,13 +9,17 @@ const WEAPON_SCALE = 0.4; // Portion of the viewport the weapon should occupy.
 const WEAPON_MARGIN = 0.35; // How much space to give on the right side of weapon, as a fraction of the viewport width.
 const WEAPON_CLIP_BOTTOM = 0.05; // How much of the weapon to trim off the bottom, as a fraction of viewport height.
 const BACKWARDS_RATE = 0.75; // Fraction of forward speed to use when going backwards
+const BOB_RATE = 8; // How fast the weapon bobs when walking
+const BOB_SIZE = 0.02; // How big the weapon bobs as a fraction of the weapon image size.
 
 export class Player {
     public angle: number;
-    private weaponX: number;    // Where int he viewport the weapon should be drawn.
+    private weaponX: number;    // Where in the viewport the weapon should be drawn.
     private weaponY: number;
     private weaponWidth: number;
     private weaponHeight: number;
+    private distanceTravelled: number;
+    private bobRadius: number;
 
     constructor(
         private controls: Controls,
@@ -28,11 +32,13 @@ export class Player {
         viewportHeight: number)
     {
         this.angle = 0;
+        this.distanceTravelled = 0;
 
         this.weaponWidth = this.weapon.width * WEAPON_SCALE;
         this.weaponHeight = this.weapon.height * WEAPON_SCALE;
         this.weaponX = viewportWidth - this.weaponWidth - viewportWidth * WEAPON_MARGIN;
         this.weaponY = viewportHeight - this.weaponHeight + viewportHeight * WEAPON_CLIP_BOTTOM;
+        this.bobRadius = this.weaponHeight * BOB_SIZE;
     }
 
     update(elapsed: number, map: Map) {
@@ -55,9 +61,12 @@ export class Player {
         // Only update the position if the target cell is empty.
         if (inWall || map.get(this.x + dx, this.y) <= 0) this.x += dx;
         if (inWall || map.get(this.x, this.y + dx) <= 0) this.y += dy;
+        this.distanceTravelled += elapsed * BOB_RATE;
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-        ctx.drawImage(this.weapon.image, this.weaponX, this.weaponY, this.weaponWidth, this.weaponHeight);
+        var bobx = this.bobRadius * Math.cos(this.distanceTravelled);
+        var boby = this.bobRadius * Math.sin(this.distanceTravelled * 2);
+        ctx.drawImage(this.weapon.image, this.weaponX + bobx, this.weaponY + boby, this.weaponWidth, this.weaponHeight);
     }
 }
