@@ -37,7 +37,6 @@ export class Weather {
     }
 
     private startLightning() {
-        console.log('Lightning strike');
         this.light = 1;
         var range = (LIGHTNING_DURATION_MAX - LIGHTNING_DURATION_MIN) / 2;
         this.duration = Math.random() * range + LIGHTNING_DURATION_MIN;

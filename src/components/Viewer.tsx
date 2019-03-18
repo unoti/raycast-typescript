@@ -24,7 +24,6 @@ export class Viewer extends Component<Props, State> {
 //        this.raycast = new Raycast(this.canvasRef.current);
 
     public componentDidMount() {
-        console.log('component did mount');
         if (this.canvasRef.current) {
             var isMobile = false; //*TODO: determine if mobile
             this.raycast = new Raycast(this.canvasRef.current, isMobile);

@@ -6,7 +6,7 @@ import { Map } from './Map';
 import { Weather } from './Weather';
 import { Camera } from './Camera';
 
-const MOVE_SPEED = 80;
+const MOVE_SPEED = 3;
 const TURN_SPEED = Math.PI;   // Turn speed in radians per second.
 const MAP_SIZE = 64;        // Size of one side of the map square in cells.
 
@@ -25,7 +25,6 @@ export class Raycast {
 
     constructor(private canvas: HTMLCanvasElement, isMobile: boolean) {
         this.ctx = this.canvas.getContext('2d');
-        console.log('constructed raycast');
         this.frameCount = 0;
         this.animationCallback = this.frameCallback.bind(this);
         this.running = false;
@@ -33,7 +32,7 @@ export class Raycast {
 
         this.controls = new Controls();
         var weapon = new Bitmap('assets/knife.png', 319, 320);
-        this.player = new Player(this.controls, TURN_SPEED, 10, -1, weapon, canvas.width, canvas.height);
+        this.player = new Player(this.controls, TURN_SPEED, MOVE_SPEED, 10, -1, weapon, canvas.width, canvas.height);
         this.skybox = new Skybox('assets/skybox.jpg', 2000, 750, canvas.width, canvas.height);
         var wallTexture = new Bitmap('assets/wall.jpg', 1024, 1024);
         this.map = new Map(MAP_SIZE, wallTexture);
@@ -48,7 +47,6 @@ export class Raycast {
     public start() {
         this.running = true;
         requestAnimationFrame(this.animationCallback);
-        console.log('start called');
     }
 
     public stop() {
@@ -56,26 +54,20 @@ export class Raycast {
     }
 
     public update(elapsed: number) {
-        this.player.update(elapsed);
+        this.player.update(elapsed, this.map);
         this.weather.update(elapsed);
 
         var fps = elapsed ? 1 / elapsed : 0;
-        console.log(`pos=(${this.player.x}, ${this.player.y}) angle=${this.player.angle} light=${this.weather.light} fps=${fps.toPrecision(5)}`);
+        //console.log(`pos=(${this.player.x}, ${this.player.y}) angle=${this.player.angle} light=${this.weather.light} fps=${fps.toPrecision(5)}`);
     }
 
     public renderFrame() {
         if (this.ctx == null)   // because my context type is | null, because it has delayed loading because React.
             return;
         this.skybox.draw(this.ctx, this.player.angle);
-        this.player.draw(this.ctx);
         this.weather.draw(this.ctx);
         this.camera.drawColumns(this.ctx, this.player, this.map, this.weather.light);
-
-        //this.ctx.fillStyle = 'black';
-        //this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
-        
-        //this.ctx.fillStyle = 'green';
-        //this.ctx.fillRect(this.blipX, this.blipY, 150, 100);
+        this.player.draw(this.ctx);
     }
 
     public frameCallback(time: number) {

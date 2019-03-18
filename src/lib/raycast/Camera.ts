@@ -51,8 +51,6 @@ export class Camera {
 
         // Draw the walls starting at the furthest and work towards the closest.
         for (var s = ray.steps.length - 1; s >= 0; s--) {
-            //console.log(`hit=${hit} s=${s} steps:`);
-            //console.log(ray.steps);
             var step = ray.steps[s];
             if (s === hit) {
                 var textureX = Math.floor(wallTexture.width * step.offset);
