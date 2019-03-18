@@ -17,7 +17,7 @@ export class Camera {
         public resolution: number,  // Number of vertical strips to render
         public range: number // Maximum distance the camera sees. Things farther than this are not shown.
     ) {
-        this.focalLength = 0.8;
+        this.focalLength = 0.5;
         this.stripWidth = this.viewportWidth / this.resolution;
         this.lightRange = 5;
     }
