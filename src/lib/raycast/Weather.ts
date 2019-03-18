@@ -7,7 +7,7 @@ export class Weather {
     public light: number;
     private endX: number;
     private endY: number;
-    private duration: number;   // Total strike duration for this lightning strike
+    private duration: number;   // Total strike duration for current lightning strike
 
     constructor(viewportWidth: number, viewportHeight: number)
     {

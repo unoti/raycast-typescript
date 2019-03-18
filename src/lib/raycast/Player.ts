@@ -6,7 +6,7 @@ const DIR_LEFT = 1;
 const TWO_PI = Math.PI * 2;
 const WEAPON_SCALE = 0.4; // Portion of the viewport the weapon should occupy.
 const WEAPON_MARGIN = 0.35; // How much space to give on the right side of weapon, as a fraction of the viewport width.
-const WEAPON_CLIP_BOTTOM = 0.02; // How much of the weapon to trim off the bottom, as a fraction of viewport height.
+const WEAPON_CLIP_BOTTOM = 0.05; // How much of the weapon to trim off the bottom, as a fraction of viewport height.
 
 export class Player {
     public angle: number;

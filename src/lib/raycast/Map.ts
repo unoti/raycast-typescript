@@ -1,3 +1,7 @@
+import { Ray } from "./Ray";
+import { Step } from "./Step";
+import { Bitmap } from "./Bitmap";
+
 export const MAP_EMPTY = 0;
 export const MAP_WALL = 1;
 export const MAP_EDGE = -1;    // Edge of the world.
@@ -6,7 +10,7 @@ const FILL_RATE = 0.3;  // How full the map will be when making random walls.
 export class Map {
     private grid: Uint8Array;
 
-    constructor(public size: number) {
+    constructor(public size: number, public wallTexture: Bitmap) {
         this.grid = new Uint8Array(size * size);
     }
 
@@ -25,4 +29,10 @@ export class Map {
             this.grid[i] = Math.random() < FILL_RATE ? MAP_WALL : MAP_EMPTY;
         }
     }
+
+    castRay(x: number, y: number, angle: number, range: number): Ray {
+        var step = new Step(x, y, 0, 0, 0, 0, 0);
+        return new Ray(this, step, Math.sin(angle), Math.cos(angle), range);
+    }
+
 }
