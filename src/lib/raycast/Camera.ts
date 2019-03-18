@@ -27,8 +27,8 @@ export class Camera {
         for (var column = 0; column < this.resolution; column++) {
             var x = column / this.resolution - 0.5; // Middle of the strip width. *TODO try tweaking the 0.5
             var angle = Math.atan2(x, this.focalLength);
-            var ray = map.castRay(player.x, player.y, angle, this.range);
-            //this.drawColumn(ctx, column, ray, angle, map, ambientLight)
+            var ray = map.castRay(player.x, player.y, player.angle + angle, this.range);
+            this.drawColumn(ctx, column, ray, angle, map, ambientLight)
         }
         ctx.restore();
     }
@@ -50,9 +50,11 @@ export class Camera {
         while (++hit < ray.steps.length && ray.steps[hit].height <= 0);
 
         // Draw the walls starting at the furthest and work towards the closest.
-        for (var s = ray.steps.length - 1; s >= 0; s++) {
+        for (var s = ray.steps.length - 1; s >= 0; s--) {
+            //console.log(`hit=${hit} s=${s} steps:`);
+            //console.log(ray.steps);
             var step = ray.steps[s];
-            if (s == hit) {
+            if (s === hit) {
                 var textureX = Math.floor(wallTexture.width * step.offset);
                 var wallProjection = this.project(step.height, angle, step.distance);
 

@@ -1,8 +1,8 @@
 import { Controls } from './Controls';
 import { Bitmap } from './Bitmap';
 
-const DIR_RIGHT = -1;   // Based on the winding direction of radians on a unit circle.
-const DIR_LEFT = 1;
+const DIR_RIGHT = 1;   // Based on the winding direction of radians on a unit circle.
+const DIR_LEFT = -1;
 const TWO_PI = Math.PI * 2;
 const WEAPON_SCALE = 0.4; // Portion of the viewport the weapon should occupy.
 const WEAPON_MARGIN = 0.35; // How much space to give on the right side of weapon, as a fraction of the viewport width.
