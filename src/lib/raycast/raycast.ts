@@ -6,6 +6,8 @@ import { Map } from './Map';
 import { Weather } from './Weather';
 import { Camera } from './Camera';
 
+const RESOLUTION = 320; // Number of vertical strips.
+const RANGE = 14;   // Maximum distance at which a wall will be drawn. Walls further than this won't be rendered.
 const MOVE_SPEED = 3;
 const TURN_SPEED = Math.PI;   // Turn speed in radians per second.
 const MAP_SIZE = 64;        // Size of one side of the map square in cells.
@@ -38,8 +40,8 @@ export class Raycast {
         this.map = new Map(MAP_SIZE, wallTexture);
         this.map.makeRandomWalls();
         this.weather = new Weather(canvas.width, canvas.height);
-        var resolution = isMobile ? 160 : 320;
-        var range = isMobile ? 8 : 14;
+        var resolution = RESOLUTION; //isMobile ? 160 : 320;
+        var range = RANGE; // isMobile ? 8 : 14;
         this.camera = new Camera(canvas.width, canvas.height, resolution, range);
         this.start();
     }
@@ -58,7 +60,7 @@ export class Raycast {
         this.weather.update(elapsed);
 
         var fps = elapsed ? 1 / elapsed : 0;
-        //console.log(`pos=(${this.player.x}, ${this.player.y}) angle=${this.player.angle} light=${this.weather.light} fps=${fps.toPrecision(5)}`);
+        console.log(`pos=(${this.player.x}, ${this.player.y}) angle=${this.player.angle} light=${this.weather.light} fps=${fps.toPrecision(5)}`);
     }
 
     public renderFrame() {

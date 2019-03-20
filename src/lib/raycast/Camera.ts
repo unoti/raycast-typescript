@@ -2,6 +2,8 @@ import { Player } from './Player';
 import { Map } from './Map';
 import { Ray } from './Ray';
 
+const FOCAL_LENGTH = 0.5;
+
 class Projection {
     constructor(public top: number, public height: number) {}
 }
@@ -17,7 +19,7 @@ export class Camera {
         public resolution: number,  // Number of vertical strips to render
         public range: number // Maximum distance the camera sees. Things farther than this are not shown.
     ) {
-        this.focalLength = 0.5;
+        this.focalLength = FOCAL_LENGTH;
         this.stripWidth = this.viewportWidth / this.resolution;
         this.lightRange = 5;
     }
